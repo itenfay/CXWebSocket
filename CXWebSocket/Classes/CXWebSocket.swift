@@ -38,7 +38,7 @@ import Starscream
     func sendData(_ data: Data)
 }
 
-public class CXWebSocket: NSObject, ISKWebSocket, WebSocketDelegate {
+public class CXWebSocket: NSObject, ISKWebSocket {
     
     private var socket: WebSocket?
     private var customRequest: URLRequest?
@@ -212,7 +212,16 @@ public class CXWebSocket: NSObject, ISKWebSocket, WebSocketDelegate {
         reconnectTime = 0
     }
     
-    // MARK: - WebSocketDelegate
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+        debugPrint("[I] " + "[WS] \(type(of: self)) deinit.")
+    }
+    
+}
+
+// MARK: - WebSocketDelegate
+
+extension CXWebSocket: WebSocketDelegate {
     
     public func didReceive(event: WebSocketEvent, client: WebSocket) {
         switch event {
@@ -247,6 +256,7 @@ public class CXWebSocket: NSObject, ISKWebSocket, WebSocketDelegate {
         case .error(let error):
             isConnected = false
             handleError(error)
+        default: break
         }
     }
     
@@ -259,11 +269,6 @@ public class CXWebSocket: NSObject, ISKWebSocket, WebSocketDelegate {
             debugPrint("[E] " + "[WS] websocket encountered an error")
         }
         delegate?.cxWebSocketDidFailWithError(error)
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-        debugPrint("[I] " + "[WS] \(type(of: self)) deinit.")
     }
     
 }
