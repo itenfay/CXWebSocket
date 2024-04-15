@@ -122,7 +122,8 @@ public class CXWebSocket: NSObject, ISKWebSocket {
             request.cachePolicy = .useProtocolCachePolicy
             socket = WebSocket(request: request)
         }
-        socket?.delegate = self
+        //socket?.delegate = self
+        _onWsEvent()
         socket?.connect()
     }
     
@@ -221,9 +222,15 @@ public class CXWebSocket: NSObject, ISKWebSocket {
 
 // MARK: - WebSocketDelegate
 
-extension CXWebSocket: WebSocketDelegate {
+extension CXWebSocket {
     
-    public func didReceive(event: WebSocketEvent, client: WebSocket) {
+    private func _onWsEvent() {
+        socket?.onEvent = { [weak self] event in
+            self?._didReceive(event: event)
+        }
+    }
+    
+    private func _didReceive(event: WebSocketEvent) {
         switch event {
         case .connected(let headers):
             debugPrint("[I] " + "[WS] Websocket is connected: \(headers)")

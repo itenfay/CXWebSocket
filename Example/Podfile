@@ -4,12 +4,9 @@ platform :ios, '10.0'
 
 target 'CXWebSocket_Example' do
   pod 'CXWebSocket', :path => '../'
-  # Starscream
-  pod 'Starscream'
   
   target 'CXWebSocket_Tests' do
     inherit! :search_paths
-    # Starscream
-    pod 'Starscream'
+    
   end
 end
