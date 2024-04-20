@@ -1,6 +1,6 @@
 //
 //  CXWebSocket.swift
-//  CXSwiftKit
+//  CXWebSocket
 //
 //  Created by Teng Fei on 2022/11/18.
 //
@@ -220,7 +220,7 @@ public class CXWebSocket: NSObject, ISKWebSocket {
     
 }
 
-// MARK: - WebSocketDelegate
+// MARK: - onEvent
 
 extension CXWebSocket {
     
