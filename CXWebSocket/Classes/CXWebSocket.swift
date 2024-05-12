@@ -27,13 +27,12 @@ import Starscream
     var heartbeatDuration: TimeInterval { get set }
     var isConnected: Bool { get }
     var networkReachable: Bool { get }
-    var heartbeatWork: (() -> Void)? { get set }
+    var onHeartbeatWork: (() -> Void)? { get set }
     func configureRequest(handler: @escaping () -> URLRequest)
     func open()
     func close()
     func reconnect()
     func startHeartbeat()
-    func destroyHeartbeat()
     func sendMessage(_ message: String)
     func sendData(_ data: Data)
 }
@@ -51,9 +50,9 @@ public class CXWebSocket: NSObject, ISKWebSocket {
     public private(set) var urlString: String
     
     public var timeoutInterval: TimeInterval = 10
-    public var reconnectMaxTime: TimeInterval = 30
-    public var heartbeatDuration: TimeInterval = 10
-    public var heartbeatWork: (() -> Void)?
+    public var reconnectMaxTime: TimeInterval = 20
+    public var heartbeatDuration: TimeInterval = 5
+    public var onHeartbeatWork: (() -> Void)?
     
     public private(set) var networkReachable: Bool = true
     public weak var delegate: CXWebSocketDelegate?
@@ -134,7 +133,6 @@ public class CXWebSocket: NSObject, ISKWebSocket {
     
     /// Disconnect the web socket.
     private func disconnect() {
-        destroyHeartbeat()
         socket?.disconnect()
         resetConnectTime()
         isConnected = false
@@ -168,20 +166,24 @@ public class CXWebSocket: NSObject, ISKWebSocket {
         }
         heartbeatTimer = Timer(timeInterval: heartbeatDuration,
                                target: self,
-                               selector: #selector(sendHeartbeatAction),
+                               selector: #selector(onHeartbeatCheck),
                                userInfo: nil,
                                repeats: true)
         heartbeatTimer?.fireDate = Date.distantPast
         RunLoop.current.add(heartbeatTimer!, forMode: .common)
     }
     
-    /// The action is used to send the heartbeat packets.
-    @objc private func sendHeartbeatAction() {
-        heartbeatWork?()
+    /// The action is used to check the heartbeat packets.
+    @objc private func onHeartbeatCheck() {
+        if isConnected {
+            onHeartbeatWork?()
+        } else {
+            destroyHeartbeat()
+        }
     }
     
     /// Destroy the heartbeat when disconnected.
-    public func destroyHeartbeat() {
+    private func destroyHeartbeat() {
         if heartbeatTimer == nil {
             return
         }
@@ -192,6 +194,7 @@ public class CXWebSocket: NSObject, ISKWebSocket {
     /// Reconnect the web socket.
     public func reconnect() {
         if !autoReconnect { return }
+        
         // The reconnection interval can be adjusted according to the business.
         if reconnectTime > reconnectMaxTime {
             reconnectTime = reconnectMaxTime
@@ -205,7 +208,7 @@ public class CXWebSocket: NSObject, ISKWebSocket {
         if reconnectTime == 0 {
             reconnectTime = 2
         } else {
-            reconnectTime *= 2
+            reconnectTime += 2
         }
     }
     
@@ -236,7 +239,7 @@ extension CXWebSocket {
             debugPrint("[I] " + "[WS] Websocket is connected: \(headers)")
             isConnected = true
             resetConnectTime()
-            startHeartbeat()
+            onHeartbeatCheck()
             delegate?.cxWebSocketDidConnect(headers)
         case .disconnected(let reason, let code):
             debugPrint("[I] " + "[WS] Websocket is disconnected: \(reason) with code: \(code)")
