@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'CXWebSocket'
-  s.version          = '1.0.3'
+  s.version          = '1.1.0'
   s.summary          = 'CXWebSocket wraps websockets in swift for iOS and OSX.'
   
   # This description is used to generate tags and improve search results.
@@ -46,5 +46,4 @@ Pod::Spec.new do |s|
   # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'
   s.dependency 'Starscream'
-  
 end

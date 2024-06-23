@@ -27,3 +27,7 @@ To use this library, please go to **[here](https://github.com/itenfay/FireKylin.
 ## License
 
 CXWebSocket is available under the MIT license. See the LICENSE file for more info.
+
+## Feedback is welcome
+
+If you notice any issue to create an issue. I will be happy to help you.
