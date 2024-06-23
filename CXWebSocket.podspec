@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'CXWebSocket'
-  s.version          = '1.0.2'
+  s.version          = '1.0.3'
   s.summary          = 'CXWebSocket wraps websockets in swift for iOS and OSX.'
   
   # This description is used to generate tags and improve search results.
@@ -21,11 +21,11 @@ Pod::Spec.new do |s|
   TODO: CXWebSocket wraps websockets in swift for iOS and OSX.
   DESC
   
-  s.homepage         = 'https://github.com/chenxing640/CXWebSocket'
+  s.homepage         = 'https://github.com/itenfay/CXWebSocket'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'Teng Fei' => 'hansen981@126.com' }
-  s.source           = { :git => 'https://github.com/chenxing640/CXWebSocket.git', :tag => s.version.to_s }
+  s.author           = { 'Tenfay' => 'itenfay@163.com' }
+  s.source           = { :git => 'https://github.com/itenfay/CXWebSocket.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
   
   s.ios.deployment_target = '12.0'
@@ -33,7 +33,8 @@ Pod::Spec.new do |s|
   s.tvos.deployment_target = '12.0'
   s.watchos.deployment_target = '3.0'
   
-  s.swift_versions = ['4.2', '5.0']
+  #s.swift_versions = ['4.2', '5.0']
+  s.swift_version = '5.0'
   s.requires_arc = true
   s.source_files = 'CXWebSocket/Classes/*.{swift}'
   

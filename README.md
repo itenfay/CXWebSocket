@@ -9,7 +9,7 @@
 
 ## Requirements
 
-* Xcode 13.0+, iOS 12.0, tvOS 12.0, OSX 10.13, watchOS 3.0
+* Xcode 14.0+, iOS 12.0, tvOS 12.0, OSX 10.13, watchOS 3.0
 
 ## Installation
 
@@ -22,12 +22,7 @@ pod 'CXWebSocket'
 
 ## Example
 
-<!--To run the example project, clone the repo, and run `pod install` from the Example directory first.-->
-To use this library, please go to **[here](https://github.com/chenxing640/CXSwiftKit.git)**!
-
-## Author
-
-Teng Fei, hansen981@126.com
+To use this library, please go to **[here](https://github.com/itenfay/FireKylin.git)**!
 
 ## License
 
